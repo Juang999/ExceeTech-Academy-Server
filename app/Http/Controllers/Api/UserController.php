@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\{Auth, DB, Hash};
+use App\Http\Requests\{RegisterRequest, LoginRequest};
 
 class UserController extends Controller
 {
@@ -43,12 +41,20 @@ class UserController extends Controller
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
                 'password' => Hash::make($request->password)
-            ])->sendEmailVerificationNotification();
+            ]);
 
             DB::commit();
+
+            $user = User::where("email", $user->email)->first();
+
+            $token = $user->createToken('Login Token')->accessToken;
+
+            event(new Registered($user));
             return response()->json([
                 'status' => 'success',
                 'message' => 'registration successfully!',
+                'data' => $user,
+                'token' => $token
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -57,6 +63,15 @@ class UserController extends Controller
                 'message' => 'registration failure',
                 'error' => $th->getMessage(),
             ], 400);
+        }
+    }
+
+    public function profile()
+    {
+        try {
+            
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }

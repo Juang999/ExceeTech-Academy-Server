@@ -1,20 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-class VerificationController extends Controller
+class VerifyController extends Controller
 {
     public function notVerified()
     {
-        return response()->json([
-            'status' => 'rejected',
-            'message' => 'your account is not verified'
-        ], 300);
+        return view('verify.verify');
     }
 
     public function verify(EmailVerificationRequest $request)
@@ -34,13 +30,8 @@ class VerificationController extends Controller
         }
     }
 
-    public function resendEmail(Request $request)
+    public function hasVerifiedEmail()
     {
-        $request->user()->sendEmailVerificationNotification();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'resend email'
-        ]);
+        return view('verify.verified');
     }
 }

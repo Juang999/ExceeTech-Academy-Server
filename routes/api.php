@@ -22,9 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [Api\UserController::class, 'register']);
 Route::post('login', [Api\UserController::class, 'logiin']);
 
-Route::prefix('email')->middleware('auth:api')->group(function () {
-    Route::get('verify/{id}', [Api\VerificationController::class, 'verify'])->name('verification.verify');
-    Route::get('resend', [Api\VerificationController::class, 'resend'])->name('verification.resend');
-    Route::get('verified', [Api\VerificationController::class, 'verified']);
-});
+Route::get('/email/verify', [Api\VerificationController::class, 'notVerified'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [Api\VerificationController::class, 'verify'])->middleware(['auth:api', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', [Api\VerificationController::class, 'resendEmail'])->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
 
+Route::middleware(['auth:api', 'signed', 'verified'])->group( function () {
+    Route::get('profile', [Api\UserController::class, 'profile']);
+});

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome')->name('root');
 });
+
+Route::get('/email/verify', [Web\VerifyController::class, 'notVerified'])->name('verification.notice');
+// Route::get('/email/verify/{id}/{hash}', [Web\VerifyController::class, 'verify'])->middleware(['auth:api', 'signed'])->name('verification.verify');
+
+Route::get('verify-email', [Web\VerifyController::class, 'hasVerifiedEmail'])->name('hasVerifiedEmail');
