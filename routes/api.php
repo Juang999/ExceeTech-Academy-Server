@@ -19,13 +19,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// register & login
 Route::post('register', [Api\UserController::class, 'register']);
-Route::post('login', [Api\UserController::class, 'logiin']);
+Route::post('login', [Api\UserController::class, 'login']);
 
+// verify account
 Route::get('/email/verify', [Api\VerificationController::class, 'notVerified'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [Api\VerificationController::class, 'verify'])->middleware(['auth:api', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', [Api\VerificationController::class, 'resendEmail'])->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
 
-Route::middleware(['auth:api', 'signed', 'verified'])->group( function () {
+// reset password
+Route::post('/forgot-password', [Api\VerificationController::class, 'forgotPassword'])->middleware('guest')->name('password.email');
+
+// main features
+Route::middleware(['auth:api', 'verified'])->group( function () {
     Route::get('profile', [Api\UserController::class, 'profile']);
 });

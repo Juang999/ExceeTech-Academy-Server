@@ -34,4 +34,14 @@ class VerifyController extends Controller
     {
         return view('verify.verified');
     }
+
+    public function getResetPasswordPage($token)
+    {
+        return view('auth.reset-password', ['token' => $token]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        
+    }
 }

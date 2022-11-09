@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\response;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\{Auth, DB, Hash};
@@ -11,15 +12,22 @@ use App\Http\Requests\{RegisterRequest, LoginRequest};
 
 class UserController extends Controller
 {
+    protected $response;
+
+    public function __construct()
+    {
+        $this->response = new response;
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required']
         ]);
 
         if (Auth::attempt($credentials)) {
-            $user = User::where("email", $credentials["email"])->first();
+            $user = User::where("username", $credentials["username"])->first();
 
             $token = $user->createToken('Login Token')->accessToken;
 
@@ -28,7 +36,7 @@ class UserController extends Controller
             ], 200);
         }
 
-        return response()->json('email or password icorrect!', 400);
+        return response()->json('username or password icorrect!', 400);
     }
 
     public function register(RegisterRequest $request)
@@ -69,9 +77,11 @@ class UserController extends Controller
     public function profile()
     {
         try {
-            
+            $data = Auth::user();
+
+            return $this->response->response('success', 'success to get profile', $data, 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->response->response('failed', 'failed to get profile', $th->getMessage(), 400);
         }
     }
 }
