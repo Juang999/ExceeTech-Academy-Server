@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('root');
+
+// reset password
+Route::get('/forgot-password/{token}', [Web\VerifyController::class, 'getResetPasswordPage'])->middleware('guest')->name('password.reset');
+Route::post('reset-password', [Web\VerifyController::class, 'resetPassword'])->middleware('guest')->name('password.update');
+
+Route::get('test', function () {
+    return view('auth.reset-password');
 });

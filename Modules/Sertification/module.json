@@ -1,0 +1,11 @@
+{
+    "name": "Sertification",
+    "alias": "sertification",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Sertification\\Providers\\SertificationServiceProvider"
+    ],
+    "files": []
+}
