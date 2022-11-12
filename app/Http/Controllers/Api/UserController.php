@@ -24,7 +24,7 @@ class UserController extends Controller
         $credentials = $request->validate([
             'username' => ['required'],
             'password' => ['required']
-        ]);
+    ]);
 
         if (Auth::attempt($credentials)) {
             $user = User::where("username", $credentials["username"])->first();
@@ -51,9 +51,9 @@ class UserController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
-            DB::commit();
+            $user->assignRole('client');
 
-            $user = User::where("email", $user->email)->first();
+            DB::commit();
 
             $token = $user->createToken('Login Token')->accessToken;
 
@@ -82,6 +82,15 @@ class UserController extends Controller
             return $this->response->response('success', 'success to get profile', $data, 200);
         } catch (\Throwable $th) {
             return $this->response->response('failed', 'failed to get profile', $th->getMessage(), 400);
+        }
+    }
+
+    public function registerClient()
+    {
+        try {
+
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }

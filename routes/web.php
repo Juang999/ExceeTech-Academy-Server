@@ -16,8 +16,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 */
 
 Route::get('/', function () {
-    return view('welcome')->name('root');
-});
+    return view('welcome');
+})->name('root');
 
 // reset password
 Route::get('/forgot-password/{token}', [Web\VerifyController::class, 'getResetPasswordPage'])->middleware('guest')->name('password.reset');

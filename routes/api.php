@@ -34,4 +34,9 @@ Route::post('/forgot-password', [Api\VerificationController::class, 'forgotPassw
 // main features
 Route::middleware(['auth:api', 'verified'])->group( function () {
     Route::get('profile', [Api\UserController::class, 'profile']);
+
+    Route::prefix('authorization')->group( function () {
+        Route::apiResource('role', Api\RoleController::class)->parameters(['role' => 'id']);
+        Route::apiResource('permission', Api\PermissionController::class)->parameters(['permission' => 'id'])->only('index', 'show');
+    });
 });
