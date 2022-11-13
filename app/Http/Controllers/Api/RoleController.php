@@ -86,20 +86,26 @@ class RoleController extends Controller
     {
         try {
             DB::beginTransaction();
-                $role = Role::findById($id, 'api');
+            $role = Role::findById($id, 'api');
 
                 if ($request->role_name != NULL) {
                     $role->update(['name' => $request->role_name]);
                 }
 
-                if ($request->remove_permission != NULL) {
-                    $removePermissions = json_decode($request->remove_permission, true);
-                    $role->revokePermissionTo($removePermissions);
+                if ($request->remove_permissions != NULL) {
+                    $removePermissions = json_decode($request->remove_permissions, true);
+                    for ($i=0; $i < count($removePermissions); $i++) {
+                        $role->revokePermissionTo($removePermissions[$i]['name']);
+                    }
                 }
 
-                if ($request->add_permission != NULL) {
-                    $addPermissions = json_decode($request->add_permission, true);
-                    $role->givePermissionTo($addPermissions);
+                // dd($request->add_permissions);
+
+                if ($request->add_permissions != NULL) {
+                    $addPermissions = json_decode($request->add_permissions, true);
+                    for ($i=0; $i < count($addPermissions); $i++) {
+                        $role->givePermissionTo($addPermissions[$i]['name']);
+                    }
                 }
 
             DB::commit();

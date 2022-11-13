@@ -35,8 +35,12 @@ Route::post('/forgot-password', [Api\VerificationController::class, 'forgotPassw
 Route::middleware(['auth:api', 'verified'])->group( function () {
     Route::get('profile', [Api\UserController::class, 'profile']);
 
+    // authorization
     Route::prefix('authorization')->group( function () {
         Route::apiResource('role', Api\RoleController::class)->parameters(['role' => 'id']);
         Route::apiResource('permission', Api\PermissionController::class)->parameters(['permission' => 'id'])->only('index', 'show');
     });
+
+    // register
+    Route::post('register-from-admin', [Api\UserController::class, 'registerClient'])->middleware('role_has_permission:create-user');
 });

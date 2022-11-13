@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\response;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\{Auth, DB, Hash};
-use App\Http\Requests\{RegisterRequest, LoginRequest};
+use App\Http\Requests\{RegisterRequest, LoginRequest, RegisterFromAdminRequest};
+use App\Http\Controllers\Traits\Tools;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    protected $response;
-
-    public function __construct()
-    {
-        $this->response = new response;
-    }
+    use Tools;
 
     public function login(Request $request)
     {
@@ -79,18 +76,42 @@ class UserController extends Controller
         try {
             $data = Auth::user();
 
-            return $this->response->response('success', 'success to get profile', $data, 200);
+            return $this->response('success', 'success to get profile', $data, 200);
         } catch (\Throwable $th) {
-            return $this->response->response('failed', 'failed to get profile', $th->getMessage(), 400);
+            return $this->response('failed', 'failed to get profile', $th->getMessage(), 400);
         }
     }
 
-    public function registerClient()
+    public function registerClient(Request $request)
     {
-        try {
+        $auth = $this->permission(Auth::user()->getRoleNames(), 'create-user');
+        if ($auth == false) {
+            return $this->response('failed', "your role hasn't permission", false, 300);
+        }
 
+        try {
+            $base_number = 62;
+
+            $explode = explode(' ', strtolower($request->username));
+
+            $password = implode('-', $explode);
+
+            $user = User::create([
+                'name' => ucwords($request->name),
+                'username' => ucwords($request->username),
+                'email' => $request->email,
+                'phone_number' => (substr(intval($request->phone_number), 0, 2) != $base_number) ? $base_number.substr(intval($request->phone_number), 1) : intval($request->phone_number),
+                'verified_at' => Carbon::translateTimeString(now()),
+                'password' => Hash::make($password)
+            ]);
+
+            $user->assignRole($request->role);
+
+            $user->unhash_password = $password;
+
+            return $this->response('success', 'success to create new user', $user, 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->response('failed', 'failed to create new user', $th->getMessage(), 400);
         }
     }
 }
