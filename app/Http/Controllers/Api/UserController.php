@@ -16,79 +16,19 @@ class UserController extends Controller
 {
     use Tools;
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'username' => ['required'],
-            'password' => ['required']
-    ]);
-
-        if (Auth::attempt($credentials)) {
-            $user = User::where("username", $credentials["username"])->first();
-
-            $token = $user->createToken('Login Token')->accessToken;
-
-            return response()->json([
-                'token' => $token
-            ], 200);
-        }
-
-        return response()->json('username or password icorrect!', 400);
-    }
-
-    public function register(RegisterRequest $request)
+    public function index()
     {
         try {
-            DB::beginTransaction();
-            $user = User::create([
-                'name' => $request->name,
-                'username' => $request->username,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number,
-                'password' => Hash::make($request->password)
-            ]);
+            $data = User::with('roles')->get();
 
-            $user->assignRole('client');
-
-            DB::commit();
-
-            $token = $user->createToken('Login Token')->accessToken;
-
-            event(new Registered($user));
-            return response()->json([
-                'status' => 'success',
-                'message' => 'registration successfully!',
-                'data' => $user,
-                'token' => $token
-            ], 200);
+            return $this->response('success', 'success to get data', $data, 200);
         } catch (\Throwable $th) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'registration failure',
-                'error' => $th->getMessage(),
-            ], 400);
+            return $this->response('failed', 'failed to get data', $th->getMessage(), 400);
         }
     }
 
-    public function profile()
+    public function store(RegisterFromAdminRequest $request)
     {
-        try {
-            $data = Auth::user();
-
-            return $this->response('success', 'success to get profile', $data, 200);
-        } catch (\Throwable $th) {
-            return $this->response('failed', 'failed to get profile', $th->getMessage(), 400);
-        }
-    }
-
-    public function registerClient(Request $request)
-    {
-        $auth = $this->permission(Auth::user()->getRoleNames(), 'create-user');
-        if ($auth == false) {
-            return $this->response('failed', "your role hasn't permission", false, 300);
-        }
-
         try {
             $base_number = 62;
 
@@ -101,7 +41,7 @@ class UserController extends Controller
                 'username' => ucwords($request->username),
                 'email' => $request->email,
                 'phone_number' => (substr(intval($request->phone_number), 0, 2) != $base_number) ? $base_number.substr(intval($request->phone_number), 1) : intval($request->phone_number),
-                'verified_at' => Carbon::translateTimeString(now()),
+                'email_verified_at' => Carbon::translateTimeString(now()),
                 'password' => Hash::make($password)
             ]);
 
@@ -112,6 +52,67 @@ class UserController extends Controller
             return $this->response('success', 'success to create new user', $user, 200);
         } catch (\Throwable $th) {
             return $this->response('failed', 'failed to create new user', $th->getMessage(), 400);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $data = User::where('id', $id)->with('roles')->first();
+
+            return $this->response('success', 'success to get detail user', $data, 200);
+        } catch (\Throwable $th) {
+            return $this->response('failed', 'failed to get detail user', $th->getMessage(), 400);
+        }
+    }
+
+    public function update(RegisterRequest $request, $id)
+    {
+        try {
+            User::where('id', $id)->update([
+                'name' => $request->name,
+                'username' => $request->username,
+                'phone_number' => $request->phone_number,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+
+            return $this->response('success', 'success to update user', true, 200);
+        } catch (\Throwable $th) {
+            return $this->response('failed', 'failed to update user', $th->getMessage(), 400);
+        }
+    }
+
+    public function delete($id)
+    {
+        //
+    }
+
+    public function changeRoleUser(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'role_name' => 'required'
+            ]);
+
+            $user = User::find($id);
+
+            $user->removeRole($user->getRoleNames()[0]);
+
+            $user->assignRole($request->role_name);
+
+            return $this->response('success', 'success to update role', true, 200);
+        } catch (\Throwable $th) {
+            return $this->response('failed', 'failed to update role', $th->getMessage(), 400);
+        }
+    }
+
+    public function banUser($id)
+    {
+        try {
+            
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }

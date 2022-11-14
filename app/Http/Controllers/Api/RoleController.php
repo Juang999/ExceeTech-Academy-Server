@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use App\Http\Requests\RoleRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Tools;
-use App\Http\Requests\UpdateRoleRequest;
+use App\Http\Requests\{UpdateRoleRequest, RoleRequest};
 
 class RoleController extends Controller
 {

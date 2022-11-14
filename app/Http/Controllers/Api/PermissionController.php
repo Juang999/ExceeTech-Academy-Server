@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\Traits\Tools;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
@@ -78,7 +79,22 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $request->validate([
+                'name' => 'required'
+            ]);
+
+            DB::table('permissions')->where([
+                ['id', '=', $id],
+                ['guard_name', '=', 'api']
+            ])->update([
+                'name' => $request->name
+            ]);
+
+            return $this->response('success', 'success to update permission', true, 200);
+        } catch (\Throwable $th) {
+            return $this->response('failed', 'failed to update permission', $th->getMessage(), 400);
+        }
     }
 
     /**
