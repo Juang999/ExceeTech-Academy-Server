@@ -1,10 +1,7 @@
-<p align="center"><a href="https://ibb.co/vYMTKVF"><img src="https://i.ibb.co/5FJSfG0/Exc.png" width="400" alt="Exc" border="0"></a></p>
+<p align="center"><a href="#"><img src="https://i.ibb.co/5FJSfG0/Exc.png" width="400" alt="Exc" border="0"></a></p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<h1><a href="#">Excee Technology</a></h1>
 </p>
 
 ## Status
