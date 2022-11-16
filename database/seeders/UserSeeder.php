@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                 'role' => 'super-admin'
             ],[
                 'name' => 'mentor',
-                'username' => 'mentor',
+                'username' => 'mentormentor',
                 'phone_number' => 628765434567,
                 'email' => 'mentor@exceetech.com',
                 'password' => 'mentor',

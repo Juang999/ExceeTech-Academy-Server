@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Http\Controllers\response;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -26,5 +27,16 @@ trait Tools
         ]);
 
         return $role;
+    }
+
+    public function permission($roleName, $permission)
+    {
+        $role = Role::findByName($roleName[0], 'api');
+        $boolean = $role->hasPermissionTo($permission);
+        if ($boolean == false) {
+            return $boolean;
+        } else {
+            return $boolean;
+        }
     }
 }
