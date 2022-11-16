@@ -46,7 +46,6 @@ Route::middleware(['auth:api', 'verified'])->group( function () {
             Route::post('role', 'store')->middleware('role_has_permission:role.create');
             Route::get('role/{id}', 'show')->middleware('role_has_permission:role.read');
             Route::put('role/{id}', 'update')->middleware('role_has_permission:role.update');
-            Route::delete('role/{id}', 'destroy')->middleware('role_has_permission:role.delete');
         });
         // permissionController
         Route::controller(Api\PermissionController::class)->group( function () {
@@ -54,7 +53,6 @@ Route::middleware(['auth:api', 'verified'])->group( function () {
             Route::post('permission', 'store')->middleware('role_has_permission:permission.create');
             Route::get('permission/{id}', 'show')->middleware('role_has_permission:permission-read');
             Route::put('permission/{id}', 'update')->middleware('role_has_permission:permission.update');
-            Route::delete('permission/{id}', 'destroy')->middleware('role_has_permission:permission.delete');
         });
     });
 

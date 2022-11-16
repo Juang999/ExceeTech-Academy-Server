@@ -16,10 +16,22 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $arr = [
-            'read-permission',
-            'create-permission',
-            'update-permission',
-            'delete-permission'
+            'user.read',
+            'user.create',
+            'user.update',
+            'user.delete',
+            'role.read',
+            'role.create',
+            'role.update',
+            'role.delete',
+            'permission.read',
+            'permission.create',
+            'permission.update',
+            'permission.delete',
+            'category_course.read',
+            'category_course.create',
+            'category_course.update',
+            'category_course.delete',
         ];
 
         for ($i=0; $i < count($arr); $i++) {
