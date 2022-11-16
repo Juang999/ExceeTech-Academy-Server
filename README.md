@@ -1,7 +1,7 @@
 <p align="center"><a href="#"><img src="https://i.ibb.co/5FJSfG0/Exc.png" width="400" alt="Exc" border="0"></a></p>
 
-<h1>
-    <a href="#">Excee Technology</a>
+<h1 align="center">
+    <a href="#">Excee Technology Server</a>
 </h1>
 
 ## Status
