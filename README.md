@@ -37,6 +37,7 @@ Excee-Academy is a platform established by Excee Technology that is devoted to l
 
 - **[nwidart/laravel-modules](https://nwidart.com/laravel-modules/v6/introduction)**
 - **[spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v5/introduction)**
+- **[kalnoy/nestedset](https://github.com/lazychaser/laravel-nestedset)**
 
 ## Developed By
 
