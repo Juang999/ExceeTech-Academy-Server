@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->integer('category_course_id')->constrained('category_courses');
-            $table->text('description');
-            $table->integer('meet');
-            $table->bigInteger('price');
-            $table->timestamps();
+        Schema::table('courses', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 

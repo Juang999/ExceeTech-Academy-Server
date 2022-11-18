@@ -49,7 +49,7 @@ class CategoryCourseController extends Controller
 
                 DB::commit();
 
-                return $this->response('success', 'success to create node', true, 200);
+                return $this->response('success', 'success to create node', $node, 200);
             }
 
                 $category = CategoryCourse::create([

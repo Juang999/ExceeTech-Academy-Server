@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('mentor_courses', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->references('id')->on('users');
-            $table->integer('course_id')->references('id')->on('users');
+            $table->integer('user_id')->constrained('users');
+            $table->integer('course_id')->constrained('users');
             $table->integer('sequence');
             $table->timestamps();
         });

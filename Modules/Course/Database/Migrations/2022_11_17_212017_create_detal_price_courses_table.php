@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('detal_price_courses', function (Blueprint $table) {
             $table->id();
-            $table->integer('course_id')->references('id')->on('courses');
+            $table->integer('course_id')->constrained('courses');
             $table->integer('sequence');
-            $table->bigInteger('price');   
+            $table->bigInteger('price');
             $table->timestamps();
         });
     }

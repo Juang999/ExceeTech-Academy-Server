@@ -22,4 +22,12 @@ Route::middleware(['auth:api', 'verified'])->prefix('course')->group(function ()
         Route::put('/{id}', 'update')->middleware('role_has_permission:category_course.update');
         Route::delete('/{id}', 'destroy')->middleware('role_has_permission:category_course.delete');
     });
+
+    Route::controller(Api\CourseController::class)->prefix('course')->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{course}', 'show');
+        Route::post('/', 'store');
+        Route::put('/{course}', 'update');
+        Route::delete('/{course}', 'destroy');
+    });
 });

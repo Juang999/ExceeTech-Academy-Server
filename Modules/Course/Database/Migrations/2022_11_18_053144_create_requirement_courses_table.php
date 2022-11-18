@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('requirement_courses', function (Blueprint $table) {
             $table->id();
-            $table->integer('course_id')->reference('id')->on('courses');
+            $table->integer('course_id')->constrained('courses');
             $table->integer('sequence');
             $table->string('detail_requirement');
             $table->timestamps();
