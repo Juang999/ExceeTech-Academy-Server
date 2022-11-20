@@ -4,9 +4,7 @@
     <a href="#">Excee Course Server</a>
 </h1>
 
-## Status
-
-<h1>onProgress</h1>
+## Status: onProgress
 
 ## About ExceeTech-Course-Server
 
