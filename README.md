@@ -1,16 +1,16 @@
 <p align="center"><a href="#"><img src="https://i.ibb.co/5FJSfG0/Exc.png" width="400" alt="Exc" border="0"></a></p>
 
 <h1 align="center">
-    <a href="#">Excee Technology Server</a>
+    <a href="#">Excee Course Server</a>
 </h1>
 
 ## Status
 
 <h1>onProgress</h1>
 
-## About ExceeTech-Academy-Server
+## About ExceeTech-Course-Server
 
-Excee-Academy is a platform established by Excee Technology that is devoted to learning & deepening skills in the IT field. with the online class/module-video learning system, clients can study anytime and anywhere without having to feel disturbed, in Excee-Academy offline learning & certification is also available
+Excee-Course is a platform established by Excee Course that is devoted to learning & deepening skills in the IT field. with the online class/module-video learning system, clients can study anytime and anywhere without having to feel disturbed, in Excee-Course offline learning & certification is also available
 
 ## Features
 

@@ -4,16 +4,16 @@ namespace Modules\Course\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Kalnoy\Nestedset\NodeTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CategoryCourse extends Model
+class RequirementCourse extends Model
 {
-    use HasFactory, NodeTrait;
+    use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
 
     public function Course()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsTo(Course::class);
     }
 }
