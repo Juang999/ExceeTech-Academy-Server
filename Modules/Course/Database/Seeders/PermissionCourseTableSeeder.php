@@ -5,7 +5,7 @@ namespace Modules\Course\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class CourseDatabaseSeeder extends Seeder
+class PermissionCourseTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,10 +17,5 @@ class CourseDatabaseSeeder extends Seeder
         Model::unguard();
 
         // $this->call("OthersTableSeeder");
-
-        $this->call([
-            CategoryCourseTableSeeder::class,
-            CourseTableSeeder::class
-        ]);
     }
 }
