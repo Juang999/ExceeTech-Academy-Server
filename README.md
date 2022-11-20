@@ -12,7 +12,7 @@
 
 Excee-Course is a platform established by Excee Course that is devoted to learning & deepening skills in the IT field. with the online class/module-video learning system, clients can study anytime and anywhere without having to feel disturbed, in Excee-Course offline learning & certification is also available.
 
-We use modular system to manage our features, you can the feature at **[kalnoy/nestedset](https://github.com/lazychaser/laravel-nestedset)**
+We use modular system to manage our features, you can learn the feature at **[kalnoy/nestedset](https://github.com/lazychaser/laravel-nestedset)**
 
 ## Features
 
