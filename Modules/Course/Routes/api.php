@@ -38,7 +38,7 @@ Route::middleware(['auth:api', 'verified'])->prefix('course')->group(function ()
         Route::delete('/{mentorCourse}', 'destroy');
     });
 
-    Route::controller(Api\RequirementController::class)->prefix('requirement')->group(function () {
+    Route::controller(Api\RequirementCourseController::class)->prefix('requirement')->group(function () {
         Route::post('/', 'store');
         Route::delete('/{requirementCourse}', 'destroy');
     });

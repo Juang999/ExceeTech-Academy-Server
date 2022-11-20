@@ -7,9 +7,12 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Course\Entities\RequirementCourse;
 use Modules\Course\Http\Requests\RequirementCourseRequest;
+use App\Http\Controllers\Traits\Tools;
 
 class RequirementCourseController extends Controller
 {
+    use Tools;
+
     /**
      * Display a listing of the resource.
      * @return Response
@@ -27,9 +30,8 @@ class RequirementCourseController extends Controller
     public function store(RequirementCourseRequest $request)
     {
         try {
-            $sequence = (RequirementCourse::where('id', $request->course_id)->first('sequence') != NULL)
-                ? RequirementCourse::where('course_id', $request->course_id)->latest()->first('sequence')['sequence'] + 1
-                : 1;
+            $sequence = (RequirementCourse::where('course_id', $request->course_id)->first('sequence') == NULL)
+            ? 1 : RequirementCourse::where('course_id', $request->course_id)->latest()->first('sequence')['sequence'] + 1;
 
             $requirement = RequirementCourse::create([
                 'course_id' => $request->course_id,
@@ -73,8 +75,10 @@ class RequirementCourseController extends Controller
     {
         try {
             $requirementCourse->delete();
+
+            return $this->response('success', 'success to delete requirement', true, 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->response('failed', 'failed to delete requirement', $th->getMessage(), 400);
         }
     }
 }

@@ -73,9 +73,18 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         try {
-            $course = (Role::findByName(Auth::user()->getRoleNames()[0], 'api')->hasPermissionTo('course.price_history'))
-                ? Course::where('id', $course->id)->with(['DetailPriceCourse', 'CategoryCourse', 'MentorCourse.User', 'RequirementCourse'])->first()
-                : Course::where('id', $course->id)->with(['CategoryCourse', 'MentorCourse.User', 'RequirementCourse'])->first();
+
+            $roles = Auth::user()->roles;
+            foreach ($roles as $role) {
+                $can = Role::findByName($role->name, 'api');
+                if ($can->hasPermissionTo('course.price_history')) {
+                    $course = Course::where('id', $course->id)->with(['DetailPriceCourse', 'CategoryCourse', 'MentorCourse.User', 'RequirementCourse'])->first();
+
+                    return $this->response('success', 'success to get detail course', $course, 200);
+                }
+            }
+
+            $course = Course::where('id', $course->id)->with(['CategoryCourse', 'MentorCourse.User', 'RequirementCourse'])->first();
 
             return $this->response('success', 'success to get detail course', $course, 200);
         } catch (\Throwable $th) {
