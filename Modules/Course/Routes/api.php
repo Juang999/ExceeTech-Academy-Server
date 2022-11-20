@@ -30,4 +30,16 @@ Route::middleware(['auth:api', 'verified'])->prefix('course')->group(function ()
         Route::put('/{course}', 'update');
         Route::delete('/{course}', 'destroy');
     });
+
+    Route::controller(Api\MentorCourseController::class)->prefix('mentor')->group(function () {
+        Route::get('/{course_id}', 'index');
+        Route::post('/', 'store');
+        Route::get('/{user_id}', 'show');
+        Route::delete('/{mentorCourse}', 'destroy');
+    });
+
+    Route::controller(Api\RequirementController::class)->prefix('requirement')->group(function () {
+        Route::post('/', 'store');
+        Route::delete('/{requirementCourse}', 'destroy');
+    });
 });
