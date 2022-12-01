@@ -5,6 +5,7 @@ namespace Modules\Course\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Course\Entities\Course;
+use Modules\Course\Entities\DetailPriceCourse;
 
 class CourseTableSeeder extends Seeder
 {
@@ -58,7 +59,13 @@ class CourseTableSeeder extends Seeder
         ];
 
         foreach ($courses as $course) {
-            Course::create($course);
+            $course = Course::create($course);
+
+            DetailPriceCourse::create([
+                'course_id' => $course->id,
+                'sequence' => 1,
+                'price' => $course->price
+            ]);
         }
     }
 }
