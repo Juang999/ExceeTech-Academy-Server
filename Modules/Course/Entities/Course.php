@@ -31,4 +31,9 @@ class Course extends Model
     {
         return $this->hasMany(RequirementCourse::class);
     }
+
+    public function ImageCourse()
+    {
+        return $this->hasMany(ImageCourse::class);
+    }
 }
