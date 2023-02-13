@@ -14,7 +14,8 @@ We use modular system to manage our features, you can learn the feature at **[ka
 
 ## Features
 
-- Onlie Class
+- Course Video on Demand
+- Onlie Bootcamp
 - International Certification
 
 ## Prequisites
