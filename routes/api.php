@@ -25,6 +25,8 @@ Route::controller(Api\SignController::class)->group( function () {
     Route::post('login', 'login');
 });
 
+Route::post('logout', [Api\SignController::class, 'logout'])->middleware('auth:api');
+
 // verify account
 Route::controller(Api\VerificationController::class)->prefix('email')->group( function () {
     // verifyEmail
