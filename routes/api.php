@@ -25,6 +25,7 @@ Route::controller(Api\SignController::class)->group( function () {
     Route::post('login', 'login');
 });
 
+// logout
 Route::post('logout', [Api\SignController::class, 'logout'])->middleware('auth:api');
 
 // verify account
@@ -66,16 +67,18 @@ Route::middleware(['auth:api', 'verified'])->group( function () {
         Route::put('user/{id}', 'update')->middleware('role_has_permission:user.update');
         Route::delete('user/{id}', 'delete')->middleware('role_has_permission:user.delete');
         Route::put('user-change-role/{id}', 'changeRoleUser')->middleware('role_has_permission:user.update');
-        Route::put('ban-user/{id}', 'banUser')->middleware('role_has_permission:user.ban');
+        // Route::put('ban-user/{id}', 'banUser')->middleware('role_has_permission:user.ban');
+        Route::get('profile', 'detailProfile');
+        Route::patch('profile', 'updateProfile');
     });
 
     // BanController
-    Route::controller(Api\BanController::class)->group( function () {
-        Route::get('ban', 'index')->middleware('role_has_permission:ban.read');
-    });
+    // Route::controller(Api\BanController::class)->group( function () {
+    //     Route::get('ban', 'index')->middleware('role_has_permission:ban.read');
+    // });
 
-    Route::controller(Api\ProfileController::class)->group( function () {
-        Route::get('profile', 'detailProfile');
-        Route::put('profile', 'updateProfile');
-    });
+    // Route::controller(Api\ProfileController::class)->group( function () {
+    //     Route::get('profile', 'detailProfile');
+    //     Route::put('profile', 'updateProfile');
+    // });
 });

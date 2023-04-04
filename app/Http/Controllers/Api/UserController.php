@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\{Auth, DB, Hash};
-use App\Http\Requests\{RegisterRequest, LoginRequest, RegisterFromAdminRequest};
+use App\Http\Requests\{RegisterRequest, RegisterFromAdminRequest, UpdateProfileRequest};
 use App\Http\Controllers\Traits\Tools;
 use Spatie\Permission\Models\Role;
 
@@ -110,9 +110,40 @@ class UserController extends Controller
     public function banUser($id)
     {
         try {
-            
+
         } catch (\Throwable $th) {
             //throw $th;
+        }
+    }
+
+    public function detailProfile()
+    {
+        try {
+            $user = Auth::user();
+
+            $role = $user->getRoleNames();
+
+            return $this->response('success', 'success to get profile', compact('user', 'role'), 200);
+        } catch (\Throwable $th) {
+            return $this->response('failed', 'failed to get profile', $th->getMessage(). 400);
+        }
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        try {
+            $user = User::find(Auth::user()->id);
+
+            $updateProfile = $user->update([
+                "name" => ($request->name) ? $request->name : $user->name,
+                "username" => ($request->username) ? $request->username : $user->username,
+                "email" => ($request->email) ? $request->email : $user->email,
+                "phone_number" => ($request->phone_number) ? $request->phone_number : $user->phone_number
+            ]);
+
+            return $this->response('success', 'success to update profile', $updateProfile, 200);
+        } catch (\Throwable $th) {
+            return $this->response("failed", "failed to update profile", $th->getMessage(), 400);
         }
     }
 }

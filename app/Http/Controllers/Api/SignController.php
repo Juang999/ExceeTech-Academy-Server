@@ -21,10 +21,15 @@ class SignController extends Controller
             'password' => ['required']
     ]);
 
-        if (Auth::attempt($credentials)) {
-            $user = User::where("username", $credentials["username"])->first();
+
+    if (Auth::attempt($credentials)) {
+        $user = User::where("username", $credentials["username"])->first();
 
             $token = $user->createToken('Login Token')->accessToken;
+
+            return response()->json([
+                'token' => $token
+            ]);
 
             return response()->json([
                 'token' => $token
