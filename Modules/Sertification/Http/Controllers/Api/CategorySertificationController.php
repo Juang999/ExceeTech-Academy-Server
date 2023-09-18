@@ -5,10 +5,14 @@ namespace Modules\Sertification\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Sertification\Entities\CategorySertification;
+use App\Http\Controllers\Traits\Tools;
+use Modules\Sertification\Entities\CategoryCertification;
+use Modules\Sertification\Http\Requests\CreateCategorySertificationRequest;
 
 class CategorySertificationController extends Controller
 {
+    use Tools;
+
     /**
      * Display a listing of the resource.
      * @return Response
@@ -27,9 +31,18 @@ class CategorySertificationController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCategorySertificationRequest $request)
     {
-        //
+        try {
+            $category = CategoryCertification::create([
+                'category_name' => $request->category_name,
+                'is_active' => 'Y'
+            ]);
+
+            return $this->response('success', 'success to create new category', $category,  200);
+        } catch (Exception $e) {
+            return $this->response('failed', 'failed to create new category', $e->getMessage(), 400);
+        }
     }
 
     /**

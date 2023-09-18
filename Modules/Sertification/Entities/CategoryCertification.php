@@ -10,10 +10,10 @@ class CategoryCertification extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [];
+    protected $fillable = ['category_name', 'is_active'];
     
-    protected static function newFactory()
-    {
-        return \Modules\Sertification\Database\factories\CategoryCertificationFactory::new();
-    }
+    // protected static function newFactory()
+    // {
+    //     return \Modules\Sertification\Database\factories\CategoryCertificationFactory::new();
+    // }
 }
