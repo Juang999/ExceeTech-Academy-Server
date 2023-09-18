@@ -40,9 +40,9 @@ class RoleController extends Controller
     {
         try {
             DB::beginTransaction();
-            $role = $this->createRole($request->role_name);
+                $role = $this->createRole($request->role_name);
 
-            $permissions = json_decode($request->permissions, true);
+                $permissions = json_decode($request->permissions, true);
 
                 $role->givePermissionTo($permissions);
             DB::commit();
