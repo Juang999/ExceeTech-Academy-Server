@@ -20,9 +20,11 @@ class CategorySertificationController extends Controller
     public function index()
     {
         try {
-            
+            $category = CategoryCertification::get();
+
+            return $this->response('success', 'success to get data category', $category, 200);
         } catch (Exception $e) {
-            
+            return $this->resopnse('failed', 'failed to get data category', $e->getMessage(), 400);
         }
     }
 
