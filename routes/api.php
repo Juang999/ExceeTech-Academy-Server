@@ -70,6 +70,7 @@ Route::middleware(['auth:api', 'verified'])->group( function () {
         // Route::put('ban-user/{id}', 'banUser')->middleware('role_has_permission:user.ban');
         Route::get('profile', 'detailProfile');
         Route::patch('profile', 'updateProfile');
+        Route::patch('image/upload', 'uploadImage');
     });
 
     // BanController

@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\{Auth, DB, Hash};
-use App\Http\Requests\{RegisterRequest, RegisterFromAdminRequest, UpdateProfileRequest};
 use App\Http\Controllers\Traits\Tools;
-use Spatie\Permission\Models\Role;
+use App\Http\Requests\UploadImageRequest;
+use Illuminate\Support\Facades\{Auth, DB, Hash, File, Storage};
+use App\Http\Requests\{RegisterRequest, RegisterFromAdminRequest, UpdateProfileRequest};
 
 class UserController extends Controller
 {
@@ -144,6 +145,26 @@ class UserController extends Controller
             return $this->response('success', 'success to update profile', $updateProfile, 200);
         } catch (\Throwable $th) {
             return $this->response("failed", "failed to update profile", $th->getMessage(), 400);
+        }
+    }
+
+    public function uploadImage(UploadImageRequest $request) {
+        try {
+            $image = $request->file('image');
+            $user = Auth::user();
+            $filename = $image->getClientOriginalName();
+
+            $image->storeAs("public/profile", $filename, 'local');
+
+            User::where([
+                'id' => $user->id
+            ])->update([
+                'photo' => "profile/$filename"
+            ]);
+
+            return $this->response('success', 'success to upload image', true, 200);
+        } catch (Exception $e) {
+            return $this->response('failed', 'failed to upload image', $e->getMessage(), 400);
         }
     }
 }
