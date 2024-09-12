@@ -8,9 +8,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\{Auth, DB, Hash};
+use App\Http\Controllers\Traits\Tools;
 
 class SignController extends Controller
 {
+    use Tools;
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -18,10 +21,15 @@ class SignController extends Controller
             'password' => ['required']
     ]);
 
-        if (Auth::attempt($credentials)) {
-            $user = User::where("username", $credentials["username"])->first();
+
+    if (Auth::attempt($credentials)) {
+        $user = User::where("username", $credentials["username"])->first();
 
             $token = $user->createToken('Login Token')->accessToken;
+
+            return response()->json([
+                'token' => $token
+            ]);
 
             return response()->json([
                 'token' => $token
@@ -63,6 +71,20 @@ class SignController extends Controller
                 'message' => 'registration failure',
                 'error' => $th->getMessage(),
             ], 400);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+            $user = Auth::user()->token();
+
+            $user->revoke();
+
+            return $this->response('success', 'success to logout', true, 200);
+
+        } catch (\Throwable $th) {
+            return $this->response('failed', $th->getMessage(), 'error', 400);
         }
     }
 }

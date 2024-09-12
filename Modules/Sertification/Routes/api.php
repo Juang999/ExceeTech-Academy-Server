@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/sertification', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->prefix('/sertification')->group(function () {
+    Route::controller(Api\CategorySertificationController::class)->prefix('category-sertification')->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+    });
 });

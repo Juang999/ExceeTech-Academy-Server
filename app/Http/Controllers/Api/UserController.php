@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\{Auth, DB, Hash};
-use App\Http\Requests\{RegisterRequest, LoginRequest, RegisterFromAdminRequest};
 use App\Http\Controllers\Traits\Tools;
-use Spatie\Permission\Models\Role;
+use App\Http\Requests\UploadImageRequest;
+use Illuminate\Support\Facades\{Auth, DB, Hash, File, Storage};
+use App\Http\Requests\{RegisterRequest, RegisterFromAdminRequest, UpdateProfileRequest};
 
 class UserController extends Controller
 {
@@ -110,9 +111,60 @@ class UserController extends Controller
     public function banUser($id)
     {
         try {
-            
+
         } catch (\Throwable $th) {
             //throw $th;
+        }
+    }
+
+    public function detailProfile()
+    {
+        try {
+            $user = Auth::user();
+
+            $role = $user->getRoleNames();
+
+            return $this->response('success', 'success to get profile', compact('user', 'role'), 200);
+        } catch (\Throwable $th) {
+            return $this->response('failed', 'failed to get profile', $th->getMessage(). 400);
+        }
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        try {
+            $user = User::find(Auth::user()->id);
+
+            $updateProfile = $user->update([
+                "name" => ($request->name) ? $request->name : $user->name,
+                "username" => ($request->username) ? $request->username : $user->username,
+                "email" => ($request->email) ? $request->email : $user->email,
+                "phone_number" => ($request->phone_number) ? $request->phone_number : $user->phone_number
+            ]);
+
+            return $this->response('success', 'success to update profile', $updateProfile, 200);
+        } catch (\Throwable $th) {
+            return $this->response("failed", "failed to update profile", $th->getMessage(), 400);
+        }
+    }
+
+    public function uploadImage(UploadImageRequest $request) {
+        try {
+            $image = $request->file('image');
+            $user = Auth::user();
+            $filename = $image->getClientOriginalName();
+
+            $image->storeAs("public/profile", $filename, 'local');
+
+            User::where([
+                'id' => $user->id
+            ])->update([
+                'photo' => "profile/$filename"
+            ]);
+
+            return $this->response('success', 'success to upload image', true, 200);
+        } catch (Exception $e) {
+            return $this->response('failed', 'failed to upload image', $e->getMessage(), 400);
         }
     }
 }

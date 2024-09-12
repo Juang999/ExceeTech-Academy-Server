@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\Tools;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UploadImageRequest;
+use App\Models\Image;
 
 class ProfileController extends Controller
 {
@@ -40,6 +42,14 @@ class ProfileController extends Controller
             return $this->response('success', 'success to update profile', true, 200);
         } catch (\Throwable $th) {
             return $this->response('failed', 'failed to update profile', $th->getMessage(), 400);
+        }
+    }
+
+    public function uploadImage(UploadImageRequest $request) {
+        try {
+            dd($request->file('photo'));
+        } catch (Exception $e) {
+            
         }
     }
 }
